@@ -1,7 +1,8 @@
 import telebot
 from sql import database
 
-token = open('token.txt').readline().rstrip()
+with open('token.txt') as file:
+    token = file.readline().rstrip()
 bot = telebot.TeleBot(token)
 db = database("sql_database.db")
 
