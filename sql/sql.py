@@ -35,5 +35,11 @@ class database():
         con.close()
         return list
 
-    def sum(self, start_date, end_date, category = None):
-        pass
+    def sum(self, start_date = None, end_date = None, category = None):
+        con = sqlite3.connect(self.filename)
+        cur = con.cursor()
+        sum = 0
+        for row in cur.execute("SELECT price FROM purchases ORDER BY date"):
+           sum += row[0]
+        return sum
+

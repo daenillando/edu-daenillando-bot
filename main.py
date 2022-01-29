@@ -8,7 +8,7 @@ db = database("sql_database.db")
 # /start
 @bot.message_handler(commands = ["start"])
 def start(message):
-    bot.send_message(message.chat.id, "У аппарата ...", reply_markup = None)
+    bot.send_message(message.chat.id, "У аппарата ...")
 
 @bot.message_handler(commands = ["add"])
 def add(message):
@@ -22,17 +22,21 @@ def remove(message):
 
 @bot.message_handler(commands = ["list"])
 def list(message):
-    text = "id\tdate\tcategory\tname\tprice\n"
+    text = "ID\tДата\tКатегория\tНаименование\tЦена, руб\n"
     for row in db.list():
         for field in row:
             text += str(field) + "\t"
         text += "\n"
     bot.send_message(message.chat.id, text)
 
+@bot.message_handler(commands = ["sum"])
+def sum(message):
+    bot.send_message(message.chat.id, "Всего потрачено: {0} рублей".format(db.sum()))
+
 # Return message back
 @bot.message_handler(content_types = ["text"])
 def handle_text(message):
-    bot.send_message(message.chat.id, "Echo: " + message.text)
+    bot.send_message(message.chat.id, "Такой команды не знаю: " + message.text)
 
 # Polling messages
 bot.infinity_polling()
