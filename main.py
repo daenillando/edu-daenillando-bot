@@ -14,12 +14,12 @@ def start(message):
 @bot.message_handler(commands = ["add"])
 def add(message):
     category, name, price = message.text.split(' ')[1:4]
-    db.add(category, name, price)
+    db.c_add(category, name, price)
 
 @bot.message_handler(commands = ["remove"])
 def remove(message):
     id = message.text.split(' ')[1]
-    db.remove(id)
+    db.c_remove(id)
 
 @bot.message_handler(commands = ["list"])
 def list(message):
@@ -29,7 +29,7 @@ def list(message):
     else:
         category = None
     text = "ID\tДата\tКатегория\tНаименование\tЦена, руб\n"
-    for row in db.list(category):
+    for row in db.c_list(category):
         for field in row:
             text += str(field) + "\t"
         text += "\n"
@@ -37,7 +37,7 @@ def list(message):
 
 @bot.message_handler(commands = ["sum"])
 def sum(message):
-    bot.send_message(message.chat.id, "Всего потрачено: {0} рублей".format(db.sum()))
+    bot.send_message(message.chat.id, "Всего потрачено: {0} рублей".format(db.c_sum()))
 
 # Return message back
 @bot.message_handler(content_types = ["text"])
