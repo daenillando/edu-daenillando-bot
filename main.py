@@ -23,8 +23,13 @@ def remove(message):
 
 @bot.message_handler(commands = ["list"])
 def list(message):
+    parsed = message.text.split(' ')
+    if len(parsed) > 1:
+        category = parsed[1]
+    else:
+        category = None
     text = "ID\tДата\tКатегория\tНаименование\tЦена, руб\n"
-    for row in db.list():
+    for row in db.list(category):
         for field in row:
             text += str(field) + "\t"
         text += "\n"

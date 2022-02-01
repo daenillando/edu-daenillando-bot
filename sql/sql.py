@@ -30,16 +30,19 @@ class database():
         con = sqlite3.connect(self.filename)
         cur = con.cursor()
         list = []
-        for row in cur.execute("SELECT * FROM purchases ORDER BY date"):
-            list.append(row)
+        if category:
+            for row in cur.execute("SELECT * FROM purchases WHERE category='{0}' ORDER BY date".format(category)):
+                list.append(row)
+        else:
+            for row in cur.execute("SELECT * FROM purchases ORDER BY date"):
+                list.append(row)
         con.close()
         return list
 
     def sum(self, start_date = None, end_date = None, category = None):
         con = sqlite3.connect(self.filename)
         cur = con.cursor()
-        sum = 0
-        for row in cur.execute("SELECT price FROM purchases ORDER BY date"):
-           sum += row[0]
+        cur.execute("SELECT sum(price) FROM purchases ORDER BY date")
+        sum = cur.fetchone()[0]
         return sum
 
