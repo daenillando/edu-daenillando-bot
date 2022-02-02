@@ -1,13 +1,17 @@
 import sqlite3
 
-class database():
+class Database():
     def _db_operation(func):
         def wrapped(self, *args):
             con = sqlite3.connect(self.filename)
             self.cur = con.cursor()
-            result = func(self, *args)
-            con.commit()
-            con.close()
+            try:
+                result = func(self, *args)
+            except:
+                result = None
+            finally:
+                con.commit()
+                con.close()
             return result
         return wrapped
 

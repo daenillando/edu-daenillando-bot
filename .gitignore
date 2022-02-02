@@ -1,3 +1,5 @@
 .idea/
 token.txt
 *.db
+chats/
+venv/
